@@ -1,0 +1,122 @@
+version: '3.8'
+
+services:
+  node-1:
+    build: .
+    container_name: besu-node-1
+    ports:
+      - "30303:30303"
+      - "30303:30303/udp"
+      - "8545:8545"
+    volumes:
+      - ./genesis.json:/opt/besu/genesis.json:ro
+      - ./Node-1/data:/opt/besu/data
+    command: >
+      --data-path=/opt/besu/data
+      --genesis-file=/opt/besu/genesis.json
+      --data-storage-format=FOREST
+      --p2p-host=0.0.0.0
+      --rpc-http-enabled
+      --rpc-http-api=ETH,NET,IBFT
+      --rpc-http-host=0.0.0.0
+      --host-allowlist="*"
+      --rpc-http-cors-origins="all"
+      --profile=ENTERPRISE
+    networks:
+      besu-network:
+        ipv4_address: 172.20.0.10
+    restart: unless-stopped
+
+  node-2:
+    build: .
+    container_name: besu-node-2
+    ports:
+      - "30304:30303"
+      - "30304:30303/udp"
+      - "8546:8545"
+    volumes:
+      - ./genesis.json:/opt/besu/genesis.json:ro
+      - ./Node-2/data:/opt/besu/data
+    command: >
+      --data-path=/opt/besu/data
+      --genesis-file=/opt/besu/genesis.json
+      --data-storage-format=FOREST
+      --bootnodes=enode://d6a3a179f660e2b6c6fd8ebd53168d618bce9d4d1b6e837a48d3332678c6a3dfe17c78c14649d55f4659ff21d7047884b13312dbc8b786409b36dbaa40371994@172.20.0.10:30303
+      --p2p-host=0.0.0.0
+      --rpc-http-enabled
+      --rpc-http-api=ETH,NET,IBFT
+      --rpc-http-host=0.0.0.0
+      --host-allowlist="*"
+      --rpc-http-cors-origins="all"
+      --profile=ENTERPRISE
+    networks:
+      besu-network:
+        ipv4_address: 172.20.0.11
+    depends_on:
+      - node-1
+    restart: unless-stopped
+
+  node-3:
+    build: .
+    container_name: besu-node-3
+    ports:
+      - "30305:30303"
+      - "30305:30303/udp"
+      - "8547:8545"
+    volumes:
+      - ./genesis.json:/opt/besu/genesis.json:ro
+      - ./Node-3/data:/opt/besu/data
+    command: >
+      --data-path=/opt/besu/data
+      --genesis-file=/opt/besu/genesis.json
+      --data-storage-format=FOREST
+      --bootnodes=enode://d6a3a179f660e2b6c6fd8ebd53168d618bce9d4d1b6e837a48d3332678c6a3dfe17c78c14649d55f4659ff21d7047884b13312dbc8b786409b36dbaa40371994@172.20.0.10:30303
+      --p2p-host=0.0.0.0
+      --rpc-http-enabled
+      --rpc-http-api=ETH,NET,IBFT
+      --rpc-http-host=0.0.0.0
+      --host-allowlist="*"
+      --rpc-http-cors-origins="all"
+      --profile=ENTERPRISE
+    networks:
+      besu-network:
+        ipv4_address: 172.20.0.12
+    depends_on:
+      - node-1
+    restart: unless-stopped
+
+  node-4:
+    build: .
+    container_name: besu-node-4
+    ports:
+      - "30306:30303"
+      - "30306:30303/udp"
+      - "8548:8545"
+    volumes:
+      - ./genesis.json:/opt/besu/genesis.json:ro
+      - ./Node-4/data:/opt/besu/data
+    command: >
+      --data-path=/opt/besu/data
+      --genesis-file=/opt/besu/genesis.json
+      --data-storage-format=FOREST
+      --bootnodes=enode://d6a3a179f660e2b6c6fd8ebd53168d618bce9d4d1b6e837a48d3332678c6a3dfe17c78c14649d55f4659ff21d7047884b13312dbc8b786409b36dbaa40371994@172.20.0.10:30303
+      --p2p-host=0.0.0.0
+      --rpc-http-enabled
+      --rpc-http-api=ETH,NET,IBFT
+      --rpc-http-host=0.0.0.0
+      --host-allowlist="*"
+      --rpc-http-cors-origins="all"
+      --profile=ENTERPRISE
+    networks:
+      besu-network:
+        ipv4_address: 172.20.0.13
+    depends_on:
+      - node-1
+    restart: unless-stopped
+
+networks:
+  besu-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

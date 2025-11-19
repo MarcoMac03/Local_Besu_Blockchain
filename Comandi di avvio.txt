@@ -1,0 +1,17 @@
+creazione chiavi
+besu operator generate-blockchain-config --config-file=ibftConfigFile.json --to=networkFiles --private-key-file-name=key
+
+start Node-1
+besu --data-path=data --genesis-file=../genesis.json --rpc-http-enabled --rpc-http-api=ETH,NET,IBFT --host-allowlist="*" --rpc-http-cors-origins="all" --profile=ENTERPRISE
+
+prendi Enode da Node-1
+
+start Node-2
+besu --data-path=data --genesis-file=../genesis.json --bootnodes=enode://d6a3a179f660e2b6c6fd8ebd53168d618bce9d4d1b6e837a48d3332678c6a3dfe17c78c14649d55f4659ff21d7047884b13312dbc8b786409b36dbaa40371994@127.0.0.1:30303 --p2p-port=30304 --rpc-http-enabled --rpc-http-api=ETH,NET,IBFT --host-allowlist="*" --rpc-http-cors-origins="all" --rpc-http-port=8546 --profile=ENTERPRISE
+
+start Node-3
+besu --data-path=data --genesis-file=../genesis.json --bootnodes=enode://d6a3a179f660e2b6c6fd8ebd53168d618bce9d4d1b6e837a48d3332678c6a3dfe17c78c14649d55f4659ff21d7047884b13312dbc8b786409b36dbaa40371994@127.0.0.1:30303 --p2p-port=30305 --rpc-http-enabled --rpc-http-api=ETH,NET,IBFT --host-allowlist="*" --rpc-http-cors-origins="all" --rpc-http-port=8547 --profile=ENTERPRISE
+
+start Node-4
+besu --data-path=data --genesis-file=../genesis.json --bootnodes=enode://d6a3a179f660e2b6c6fd8ebd53168d618bce9d4d1b6e837a48d3332678c6a3dfe17c78c14649d55f4659ff21d7047884b13312dbc8b786409b36dbaa40371994@127.0.0.1:30303 --p2p-port=30306 --rpc-http-enabled --rpc-http-api=ETH,NET,IBFT --host-allowlist="*" --rpc-http-cors-origins="all" --rpc-http-port=8548 --profile=ENTERPRISE
+
